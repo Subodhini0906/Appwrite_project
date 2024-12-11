@@ -90,6 +90,39 @@ export class Service{
             return false
         }
     }
+    
+    //file upload services
+
+    async uploadFile(file){
+        try {
+            return await this.bucket.createFile(
+                config.appwriteBucketId,
+                ID.unique(),
+                file
+            )
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async deleteFile(fileId){
+        try {
+            return await this.bucket.deleteFile(
+                config.appwriteBucketId,
+                fileId
+            )
+            return true;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    getFilePreview(fileId){
+        return this.bucket.getFilePreview(
+            config.appwriteBucketId,
+            fileId
+        )
+    }
 }
 
 const service=new Service();
