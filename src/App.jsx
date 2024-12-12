@@ -20,7 +20,7 @@ function App() {
   },[])
 
   return !loading?(
-    <div className=''></div>
+    <div className='min-h-screen'>test</div>
   ):null
 }
 
