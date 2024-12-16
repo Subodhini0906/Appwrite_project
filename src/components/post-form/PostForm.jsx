@@ -28,9 +28,35 @@ function PostForm({post}) {
             if(file){
                 appwriteService.deleteFile(post.featuredImage)
             }
-            const dbPost=await appwriteService.updatePost(post.$id,{...data,featuredImage: file?file.$id:undefined})
+            const dbPost=await appwriteService.updatePost(post.$id,{...data,featuredImage: file?file.$id:undefined,})
+                if(dbPost){
+                    navigate(`/post/${dbPost.$id}`)
+                }
+        }else{
+            const file=await appwriteService.uploadFile(data.image[0]);
+            if(file){
+                const fileId=file.$id
+                data.featuredImage=fileId;
+                const dbPost=await appwriteService.createPost({...data,
+                    userID:userData.$id;
+                })
+                if(dbPost){
+                    navigate('/post/${dbPost.$id}')
+                }
+            }
         }
+        
     }
+    const slugTransform = useCallback((value) => {
+        if (value && typeof value === "string")
+            return value
+                .trim()
+                .toLowerCase()
+                .replace(/[^a-zA-Z\d\s]+/g, "-")
+                .replace(/\s/g, "-");
+
+        return "";
+    }, []);
   return (
     <div>PostForm</div>
   )
