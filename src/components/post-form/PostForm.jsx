@@ -1,6 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
@@ -38,7 +36,7 @@ function PostForm({post}) {
                 const fileId=file.$id
                 data.featuredImage=fileId;
                 const dbPost=await appwriteService.createPost({...data,
-                    userID:userData.$id;
+                    userID:userData.$id,
                 })
                 if(dbPost){
                     navigate('/post/${dbPost.$id}')
@@ -57,6 +55,16 @@ function PostForm({post}) {
 
         return "";
     }, []);
+    React.useEffect(()=>{
+        const subscription=watch((value,{name})=>{
+            if(name==='title'){
+                setValue(title,slugTransform(value.title,{shouldValidate:true}))
+            }
+        })
+        return ()=>{
+            subscription.unsubscribe();
+        }
+    },[watch,slugTransform,setValue])
   return (
     <div>PostForm</div>
   )
